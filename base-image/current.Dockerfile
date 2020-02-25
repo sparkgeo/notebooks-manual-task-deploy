@@ -27,18 +27,14 @@ RUN /anaconda/bin/conda config --add channels conda-forge
 # fixes weird proj warnings related to rasterio
 ENV PROJ_LIB='/anaconda/envs/gbdx_py3/share/proj'
 
-ENV DEFAULT_PACKAGES="scipy=1.0.0 dask=1.1.0 setuptools=44.0.0 jupyter rasterio scikit-image gdal"
-RUN /anaconda/bin/conda create  -y -n gbdx_py3 python=3.7  && \
-    /anaconda/bin/conda install -y -n gbdx_py3 $DEFAULT_PACKAGES && \
-    /anaconda/bin/conda install -y -n gbdx_py3 -c digitalglobe gbdx-auth && \
-    /anaconda/bin/conda install -y -n gbdx_py3 -c digitalglobe gbdxtools=0.16.5
+RUN /anaconda/bin/conda create -n gbdx_py2 python=2.7 jupyter notebook=5.6.0 ipykernel && \
+    /anaconda/bin/conda create -n gbdx_py3 python=3.6 jupyter notebook=5.6.0 ipykernel
 
-RUN /anaconda/bin/conda create  -y -n gbdx_py2 python=2.7 && \
-    /anaconda/bin/conda install -y -n gbdx_py2 $DEFAULT_PACKAGES && \
-    /anaconda/bin/conda install -y -n gbdx_py3 -c digitalglobe gbdx-auth && \
-    /anaconda/bin/conda install -y -n gbdx_py2 -c digitalglobe gbdxtools=0.16.5
-# get 0.16.7 since it's not in Conda
-# RUN /anaconda/envs/gbdx_py2/bin/pip install -U gbdxtools
+RUN /anaconda/bin/conda install -n gbdx_py2 -c conda-forge -c digitalglobe -y scipy=1.0.0 gbdxtools=0.16.5 dask=1.1.4 && \
+    /anaconda/bin/conda install -n gbdx_py3 -c conda-forge -c digitalglobe -y scipy=1.0.0 gbdxtools=0.16.5 dask=1.1.4
+
+RUN /anaconda/bin/conda install -n gbdx_py2 -y --channel conda-forge rasterio gdal=2.4 libiconv ncurses proj4 && \
+    /anaconda/bin/conda install -n gbdx_py3 -y --channel conda-forge rasterio gdal=2.4 libiconv ncurses proj4
 
 RUN /anaconda/envs/gbdx_py2/bin/pip install rio_hist && \
     /anaconda/envs/gbdx_py3/bin/pip install rio_hist
