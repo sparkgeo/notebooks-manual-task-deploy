@@ -1,0 +1,27 @@
+name: Docker Image CI
+
+on: [push]
+
+env:
+  docker_repo: sparkgeo
+  image_name: notebooks-manual-task
+  image_tag: latest
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build ./base-image --file base-image/Dockerfile --tag ${{ docker_repo }}/${{ image_name }}:${{ image_tag }}
+    - name: Dockerhub login
+      run: docker login -u DOCKER_USERNAME -p DOCKER_PASSWORD
+      env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Push image
+      run: docker push ${{ docker_repo }}/${{ image_name }}:${{ image_tag }}
+      
