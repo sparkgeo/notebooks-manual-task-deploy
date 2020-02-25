@@ -38,7 +38,7 @@ RUN /anaconda/bin/conda create  -y -n gbdx_py2 python=2.7 && \
     /anaconda/bin/conda install -y -n gbdx_py2 $DEFAULT_PACKAGES && \
     /anaconda/bin/conda install -y -n gbdx_py2 -c digitalglobe gbdxtools=0.16.5
 # get 0.16.7 since it's not in Conda
-RUN /anaconda/envs/gbdx_py2/bin/pip install -U gbdxtools
+# RUN /anaconda/envs/gbdx_py2/bin/pip install -U gbdxtools
 
 RUN /anaconda/envs/gbdx_py2/bin/pip install rio_hist && \
     /anaconda/envs/gbdx_py3/bin/pip install rio_hist
