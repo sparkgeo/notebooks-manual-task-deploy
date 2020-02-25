@@ -16,12 +16,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build ./base-image --file base-image/Dockerfile --tag ${{ docker_repo }}/${{ image_name }}:${{ image_tag }}
+      run: docker build ./base-image --file base-image/Dockerfile --tag ${{ env.docker_repo }}/${{ env.image_name }}:${{ env.image_tag }}
     - name: Dockerhub login
       run: docker login -u DOCKER_USERNAME -p DOCKER_PASSWORD
       env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     - name: Push image
-      run: docker push ${{ docker_repo }}/${{ image_name }}:${{ image_tag }}
+      run: docker push ${{ env.docker_repo }}/${{ env.image_name }}:${{ env.image_tag }}
       
