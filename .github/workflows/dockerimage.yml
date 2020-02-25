@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build ./base-image --file base-image/current.Dockerfile --tag ${{ env.docker_repo }}/${{ env.image_name }}:latest
+      run: docker build ./base-image --file base-image/latest.Dockerfile --tag ${{ env.docker_repo }}/${{ env.image_name }}:latest
     - name: Dockerhub login
       run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin 
     - name: Push image
@@ -29,7 +29,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build ./base-image --file base-image/latest.Dockerfile --tag ${{ env.docker_repo }}/${{ env.image_name }}:current
+      run: docker build ./base-image --file base-image/current.Dockerfile --tag ${{ env.docker_repo }}/${{ env.image_name }}:current
     - name: Dockerhub login
       run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin 
     - name: Push image
