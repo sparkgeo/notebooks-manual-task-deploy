@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 
 ENV CONDA_ALWAYS_YES="true"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -27,6 +27,13 @@ RUN /anaconda/bin/conda config --add channels conda-forge
 # fixes weird proj warnings related to rasterio
 ENV PROJ_LIB='/anaconda/envs/gbdx_py3/share/proj'
 
+# ENV DEFAULT_PACKAGES="scipy=1.0.0 dask=1.1.4 rasterio gdal=2.3 libiconv ncurses proj4 gbdxtools=0.16.5"
+# RUN /anaconda/bin/conda create -n gbdx_py2 python=2.7 jupyter notebook=5.6.0 ipykernel && \
+#     /anaconda/bin/conda create -n gbdx_py3 python=3.6 jupyter notebook=5.6.0 ipykernel
+
+# RUN /anaconda/bin/conda install -n gbdx_py2 -c conda-forge -c digitalglobe -y ${DEFAULT_PACKAGES} && \
+#     /anaconda/bin/conda install -n gbdx_py3 -c conda-forge -c digitalglobe -y ${DEFAULT_PACKAGES}
+
 RUN /anaconda/bin/conda create -n gbdx_py2 python=2.7 jupyter notebook=5.6.0 ipykernel && \
     /anaconda/bin/conda create -n gbdx_py3 python=3.6 jupyter notebook=5.6.0 ipykernel
 
@@ -40,14 +47,15 @@ RUN /anaconda/envs/gbdx_py2/bin/pip install rio_hist && \
     /anaconda/envs/gbdx_py3/bin/pip install rio_hist
 
 RUN /anaconda/bin/conda clean -tipsy && \
-    /anaconda/bin/conda clean -y --all && \
-    /anaconda/bin/conda list -n gbdx_py3 -e
+    /anaconda/bin/conda clean -y --all 
+    # /anaconda/bin/conda build purge-all 
 
-USER root
+
+# USER root
 # RUN /anaconda/envs/gbdx_py2/bin/ipython kernel install --name python2 --display-name "Python 2 (gbdx_py2)" && \
 #     /anaconda/envs/gbdx_py3/bin/ipython kernel install --name python3 --display-name "Python 3 (gbdx_py3)"
 
-USER gremlin
+# USER gremlin
 WORKDIR /home/gremlin
 
 # ADD kernel-startup-py2.sh /anaconda/envs/gbdx_py2/share/jupyter/kernels/python2/kernel-startup-py2.sh
